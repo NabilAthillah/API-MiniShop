@@ -48,7 +48,7 @@ class TransactionController extends Controller
     public function index(): JsonResponse
     {
         $transactions = Transaction::query()
-            ->with(['user', 'address', 'transactionProducts.product'])
+            ->with(['user', 'address', 'transactionProducts.product.images', 'transactionProducts.product.category'])
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -87,7 +87,7 @@ class TransactionController extends Controller
     {
         $transactions = Transaction::query()
             ->where('user_id', $request->user()->id)
-            ->with(['user', 'address', 'transactionProducts.product'])
+            ->with(['user', 'address', 'transactionProducts.product.images', 'transactionProducts.product.category'])
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -129,7 +129,7 @@ class TransactionController extends Controller
             return $this->errorResponse('You do not have permission to access this transaction.', 403);
         }
 
-        $transaction->load(['user', 'address', 'transactionProducts.product']);
+        $transaction->load(['user', 'address', 'transactionProducts.product.images', 'transactionProducts.product.category']);
 
         return $this->successResponse(
             TransactionResource::make($transaction),
@@ -208,7 +208,7 @@ class TransactionController extends Controller
             return $transaction;
         });
 
-        $transaction->load(['user', 'address', 'transactionProducts.product']);
+        $transaction->load(['user', 'address', 'transactionProducts.product.images', 'transactionProducts.product.category']);
 
         return $this->successResponse(
             TransactionResource::make($transaction),

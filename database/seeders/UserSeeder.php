@@ -29,6 +29,17 @@ class UserSeeder extends Seeder
             ]
         );
 
+        User::firstOrCreate(
+            ['email' => 'customer@minishop.com'],
+            [
+                'name' => 'Customer MiniShop',
+                'phone' => '081234567891',
+                'password' => Hash::make('CustomerMiniShop1'),
+                'email_verified_at' => now(),
+                'role_id' => $customerRole->id,
+            ]
+        );
+
         if (User::where('role_id', $customerRole->id)->count() < 10) {
             User::factory(10)->create(['role_id' => $customerRole->id]);
         }
